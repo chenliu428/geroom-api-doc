@@ -1,0 +1,232 @@
+
+应该需要一个简易api管理UI：
+    - 创建api-key
+    - 删除api-key
+
+所有接口以api-key 和 账户信息 为鉴权
+大致需要以下接口
+
+#1 获取账户信息
+
+GET /account-info?account=example-account-name HTTP/1.1
+Host: xxxxx
+x-api-key: <your-api-key>
+
+Response Status Codes:
+    - 200 OK - Success
+    - 401 Unauthorized - Unauthenticated (invalid or missing API key)
+    - 400 Bad Request - Invalid request (missing account field, invalid format)
+    - 404 Not Found - Account not found
+    - 500 Internal Server Error - Server error
+
+Success Response (200 OK):
+{
+    "status": "success",
+    "data": {
+        "credits": <number>,
+        "total_items": <number>
+    }
+}
+
+Unauthenticated Response (401 Unauthorized):
+{
+    "status": "unauthenticated",
+    "message": "Invalid or missing API key"
+}
+
+Error Response (400/404/500):
+{
+    "status": "error",
+    "message": "<error description>"
+}
+
+#2 获取账户下所有商品列表
+
+GET /items?account=example-account-name HTTP/1.1
+Host: xxxxx
+x-api-key: <your-api-key>
+
+Success Response (200 OK):
+{
+    "status": "success",
+    "data": [
+        {   // 商品基本信息
+            "id": "item-id-1",
+            "name": "item name",
+            "dimensions": {
+                    "unit": "cm", 
+                    "length": 100,
+                    "width": 100,
+                    "height": 50
+            },
+            "img_link": "https://example.com/image-link"
+        },
+        {
+            "id": "item-id-2",
+            "name": "item name",
+            "dimensions": {
+                    "unit": "cm", 
+                    "length": 100,
+                    "width": 100,
+                    "height": 50
+            },
+            "img_link": "https://example.com/image-link"
+        }
+    ]
+}
+
+Unauthenticated Response (401 Unauthorized):
+{
+    "status": "unauthenticated",
+    "message": "Invalid or missing API key"
+}
+
+Error Response (400/404/500):
+{
+    "status": "error",
+    "message": "<error description>"
+}
+
+#3 获取某一件商品完全信息
+
+POST /item HTTP/1.1
+Host: xxxxxx
+x-api-key: <your-api-key>
+Content-Type: application/json
+Content-Length: <length>
+
+{
+    "account": "example-account-name",
+    "item_id": "item-id-1"
+}
+
+Success Response (200 OK):
+{
+    "status": "success",
+    "data": { // 完全商品信息 对应数据库的一整行
+        "id": "item-id-1",
+        "name": "item name",
+        "dimensions": {
+                "unit": "cm", 
+                "length": 100,
+                "width": 100,
+                "height": 50
+        },
+        "img_link": "https://example.com/image-link",
+        "ar_link": "https://example.com/ar-link",
+        "fbx_url": "https://example.com/download/fbx",
+        "glb_url": "https://example.com/download/glb",
+        "usdz_url": "https://example.com/download/usdz"
+    }
+}
+
+Unauthenticated Response (401 Unauthorized):
+{
+    "status": "unauthenticated",
+    "message": "Invalid or missing API key"
+}
+
+Error Response (400/404/500):
+{
+    "status": "error",
+    "message": "<error description>"
+}
+
+#4 发送任务
+
+POST /create HTTP/1.1
+Host: xxxxxx
+x-api-key: <your-api-key>
+Content-Type: multipart/form-data; boundary=<boundary-string>
+
+------<boundary-string>
+Content-Disposition: form-data; name="account"
+
+example-account-name
+------<boundary-string>
+Content-Disposition: form-data; name="task_type"
+
+1          // 1:照片生3d模型，2:视频生3d模型，3:照片生画
+------<boundary-string>
+Content-Disposition: form-data; name="data"
+
+{
+    "name": "item name",
+    "dimension": {
+        "unit": "cm",  // "m", "inch" ....
+        "length": <number>,      // 当task_type=3时 对应到 "宽度 x"
+        "width": <number>,       // 当task_type=3时 对应到 "高度 y"
+        "heigth": <number>       // 当task_type=3时 对应到 "厚度"
+    }         // For task_type 3: 暂时默认没有画框
+}
+------<boundary-string>
+Content-Disposition: form-data; name="file"; filename="input.jpg"  // or "input.mp4" for task_type=2
+Content-Type: image/jpeg  // or "video/mp4" for task_type=2
+
+<binary file data>
+// For task_type 1 or 3: image file (jpg, png, etc.)
+// For task_type 2: video file (mp4, mov, etc.)
+------<boundary-string>--
+
+Success Response (200 OK):
+{
+    "status": "success",
+    "task_id": "task-id-12345"
+}
+
+Unauthenticated Response (401 Unauthorized):
+{
+    "status": "unauthenticated",
+    "message": "Invalid or missing API key"
+}
+
+Error Response (400/404/500):
+{
+    "status": "error",
+    "message": "<error description>"
+}
+
+#5 查询任务状态：
+
+POST /task-status HTTP/1.1
+Host: xxxxxx
+x-api-key: <your-api-key>
+Content-Type: application/json
+Content-Length: <length>
+
+{
+    "account": "example-account-name",
+    "task_id": "task-id-12345"
+}
+
+Success Response (200 OK) - Task Completed:
+{
+    "status": "success",
+    "task_status": "completed",
+    "item_id": "item-id-56789"
+}
+
+Success Response (200 OK) - Task In Progress:
+{
+    "status": "success",
+    "task_status": "in_progress"
+}
+
+Success Response (200 OK) - Task Failed:
+{
+    "status": "success",
+    "task_status": "failed",
+    "message": "<error description>"
+}
+
+Unauthenticated Response (401 Unauthorized):
+{
+    "status": "unauthenticated",
+    "message": "Invalid or missing API key"
+}
+
+Error Response (400/404/500):
+{
+    "status": "error",
+    "message": "<error description>"
+}
