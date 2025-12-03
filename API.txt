@@ -230,3 +230,52 @@ Error Response (400/404/500):
     "status": "error",
     "message": "<error description>"
 }
+
+#6 删除商品
+
+POST /delete-items HTTP/1.1
+Host: xxxxxx
+x-api-key: <your-api-key>
+Content-Type: application/json
+Content-Length: <length>
+
+{
+    "account": "example-account-name",
+    "items": [
+        {
+            "item_id": "item-id-1",
+            "item_name": "item name 1"
+        },
+        {
+            "item_id": "item-id-2",
+            "item_name": "item name 2"
+        }
+    ]
+}
+
+Success Response (200 OK):
+{
+    "status": "success",
+    "received_count": 2,
+    "successful_count": 1,
+    "failed_count": 1,
+    "failed_items": [
+        {
+            "item_id": "item-id-2",
+            "item_name": "item name 2",
+            "reason": "Item not found or name mismatch"
+        }
+    ]
+}
+
+Unauthenticated Response (401 Unauthorized):
+{
+    "status": "unauthenticated",
+    "message": "Invalid or missing API key"
+}
+
+Error Response (400/404/500):
+{
+    "status": "error",
+    "message": "<error description>"
+}

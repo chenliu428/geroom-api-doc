@@ -386,11 +386,98 @@ Content-Length: <length>
 
 ---
 
-## 任务状态值
+#### 任务状态值
 
 - `completed`: 任务已成功完成。返回所创建商品的 `item_id`。
 - `in_progress`: 任务仍在处理中。
 - `failed`: 任务已失败。在 `message` 字段中返回错误消息。
+
+---
+
+### 6. 删除商品
+
+删除账户下的多个商品。每个商品需要同时提供 `item_id` 和 `item_name` 进行验证，以防止意外删除。
+
+**端点：** `POST /delete-items`
+
+**请求体：**
+```json
+{
+    "account": "example-account-name",
+    "items": [
+        {
+            "item_id": "item-id-1",
+            "item_name": "item name 1"
+        },
+        {
+            "item_id": "item-id-2",
+            "item_name": "item name 2"
+        }
+    ]
+}
+```
+
+**请求示例：**
+```http
+POST /delete-items HTTP/1.1
+Host: xxxxxx
+x-api-key: <your-api-key>
+Content-Type: application/json
+Content-Length: <length>
+
+{
+    "account": "example-account-name",
+    "items": [
+        {
+            "item_id": "item-id-1",
+            "item_name": "item name 1"
+        },
+        {
+            "item_id": "item-id-2",
+            "item_name": "item name 2"
+        }
+    ]
+}
+```
+
+**成功响应 (200 OK)：**
+```json
+{
+    "status": "success",
+    "received_count": 2,
+    "successful_count": 1,
+    "failed_count": 1,
+    "failed_items": [
+        {
+            "item_id": "item-id-2",
+            "item_name": "item name 2",
+            "reason": "Item not found or name mismatch"
+        }
+    ]
+}
+```
+
+**注意：** 响应包括：
+- `received_count`: 请求中接收到的商品数量
+- `successful_count`: 成功删除的商品数量
+- `failed_count`: 删除失败的商品数量
+- `failed_items`: 删除失败的商品数组，包含失败原因
+
+**未认证响应 (401 Unauthorized)：**
+```json
+{
+    "status": "unauthenticated",
+    "message": "Invalid or missing API key"
+}
+```
+
+**错误响应 (400/404/500)：**
+```json
+{
+    "status": "error",
+    "message": "<error description>"
+}
+```
 
 ---
 
@@ -419,5 +506,4 @@ Content-Length: <length>
 - 所有文件上传都使用 `multipart/form-data` 格式
 - 多部分请求的边界字符串由 HTTP 客户端自动生成
 - 账户名称和 ID 区分大小写
-- 可能适用速率限制（请咨询 API 提供商）
-
+- 可能适用速率限制（请咨询 API 提供商
