@@ -236,7 +236,7 @@ Soumettre une tâche pour générer des modèles 3D ou des peintures à partir d
         "unit": "cm",  // "m", "inch", etc.
         "length": 100,  // Pour task_type=3 : correspond à "宽度 x" (largeur)
         "width": 200,   // Pour task_type=3 : correspond à "高度 y" (hauteur)
-        "heigth": 1.0   // Pour task_type=3 : correspond à "厚度" (épaisseur)
+        "height": 1.0   // Pour task_type=3 : correspond à "厚度" (épaisseur)
     }
 }
 ```
@@ -271,7 +271,7 @@ Content-Disposition: form-data; name="data"
         "unit": "cm",
         "length": 100,
         "width": 200,
-        "heigth": 50
+        "height": 50
     }
 }
 ------<boundary-string>
@@ -493,4 +493,9 @@ Codes de statut HTTP courants :
 - `401 Unauthorized` : Clé API manquante ou invalide
 - `404 Not Found` : Ressource non trouvée (compte, élément, tâche)
 - `500 Internal Server Error` : Erreur côté serveur
+
+
+
+
+
 

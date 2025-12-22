@@ -236,7 +236,7 @@ Submit a task to generate 3D models or paintings from images/videos.
         "unit": "cm",  // "m", "inch", etc.
         "length": 100,  // For task_type=3: corresponds to "宽度 x" (width)
         "width": 200,   // For task_type=3: corresponds to "高度 y" (height)
-        "heigth": 1.0   // For task_type=3: corresponds to "厚度" (thickness)
+        "height": 1.0   // For task_type=3: corresponds to "厚度" (thickness)
     }
 }
 ```
@@ -271,7 +271,7 @@ Content-Disposition: form-data; name="data"
         "unit": "cm",
         "length": 100,
         "width": 200,
-        "heigth": 50
+        "height ": 50
     }
 }
 ------<boundary-string>

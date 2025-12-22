@@ -240,7 +240,7 @@ Content-Length: <length>
         "unit": "cm",  // "m", "inch" 等
         "length": 100,  // 当 task_type=3 时对应 "宽度 x" (width)
         "width": 200,   // 当 task_type=3 时对应 "高度 y" (height)
-        "heigth": 50   // 当 task_type=3 时对应 "厚度" (thickness)
+        "height": 50   // 当 task_type=3 时对应 "厚度" (thickness)
     }
 }
 ```
@@ -275,7 +275,7 @@ Content-Disposition: form-data; name="data"
         "unit": "cm",
         "length": 100,
         "width": 200,
-        "heigth": 50
+        "height": 50
     }
 }
 ------<boundary-string>
