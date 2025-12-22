@@ -19,7 +19,7 @@ x-api-key: <your-api-key>
 ## URL de base
 
 ```
-Host: https://open.ge-room.com/
+Host: https://open.ge-room.com
 ```
 
 ---
@@ -38,7 +38,7 @@ Récupérer les crédits du compte et le nombre total d'éléments.
 **Exemple de requête :**
 ```http
 GET /account-info?account=example-account-name HTTP/1.1
-Host: xxxxx
+Host: https://open.ge-room.com
 x-api-key: <your-api-key>
 ```
 
@@ -90,7 +90,7 @@ Récupérer une liste de tous les éléments sous un compte (informations de bas
 **Exemple de requête :**
 ```http
 GET /items?account=example-account-name HTTP/1.1
-Host: xxxxx
+Host: https://open.ge-room.com
 x-api-key: <your-api-key>
 ```
 
@@ -160,7 +160,7 @@ Récupérer les informations complètes d'un élément spécifique, y compris to
 **Exemple de requête :**
 ```http
 POST /item HTTP/1.1
-Host: xxxxxx
+Host: https://open.ge-room.com
 x-api-key: <your-api-key>
 Content-Type: application/json
 Content-Length: <length>
@@ -250,7 +250,7 @@ Soumettre une tâche pour générer des modèles 3D ou des peintures à partir d
 **Exemple de requête :**
 ```http
 POST /create HTTP/1.1
-Host: xxxxxx
+Host: https://open.ge-room.com
 x-api-key: <your-api-key>
 Content-Type: multipart/form-data; boundary=<boundary-string>
 
@@ -327,7 +327,7 @@ Vérifier le statut d'une tâche soumise.
 **Exemple de requête :**
 ```http
 POST /task-status HTTP/1.1
-Host: xxxxxx
+Host: https://open.ge-room.com
 x-api-key: <your-api-key>
 Content-Type: application/json
 Content-Length: <length>
@@ -416,7 +416,7 @@ Supprimer plusieurs éléments d'un compte. Chaque élément nécessite à la fo
 **Exemple de requête :**
 ```http
 POST /delete-items HTTP/1.1
-Host: xxxxxx
+Host: https://open.ge-room.com
 x-api-key: <your-api-key>
 Content-Type: application/json
 Content-Length: <length>
@@ -493,9 +493,3 @@ Codes de statut HTTP courants :
 - `401 Unauthorized` : Clé API manquante ou invalide
 - `404 Not Found` : Ressource non trouvée (compte, élément, tâche)
 - `500 Internal Server Error` : Erreur côté serveur
-
-
-
-
-
-

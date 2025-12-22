@@ -19,7 +19,7 @@ x-api-key: <your-api-key>
 ## 基础 URL
 
 ```
-Host: https://open.ge-room.com/
+Host: https://open.ge-room.com
 ```
 
 ---
@@ -38,7 +38,7 @@ Host: https://open.ge-room.com/
 **请求示例：**
 ```http
 GET /account-info?account=example-account-name HTTP/1.1
-Host: xxxxx
+Host: https://open.ge-room.com
 x-api-key: <your-api-key>
 ```
 
@@ -90,7 +90,7 @@ x-api-key: <your-api-key>
 **请求示例：**
 ```http
 GET /items?account=example-account-name HTTP/1.1
-Host: xxxxx
+Host: https://open.ge-room.com
 x-api-key: <your-api-key>
 ```
 
@@ -162,7 +162,7 @@ x-api-key: <your-api-key>
 **请求示例：**
 ```http
 POST /item HTTP/1.1
-Host: xxxxxx
+Host: https://open.ge-room.com
 x-api-key: <your-api-key>
 Content-Type: application/json
 Content-Length: <length>
@@ -254,7 +254,7 @@ Content-Length: <length>
 **请求示例：**
 ```http
 POST /create HTTP/1.1
-Host: xxxxxx
+Host: https://open.ge-room.com
 x-api-key: <your-api-key>
 Content-Type: multipart/form-data; boundary=<boundary-string>
 
@@ -331,7 +331,7 @@ Content-Type: image/jpeg
 **请求示例：**
 ```http
 POST /task-status HTTP/1.1
-Host: xxxxxx
+Host: https://open.ge-room.com
 x-api-key: <your-api-key>
 Content-Type: application/json
 Content-Length: <length>
@@ -420,7 +420,7 @@ Content-Length: <length>
 **请求示例：**
 ```http
 POST /delete-items HTTP/1.1
-Host: xxxxxx
+Host: https://open.ge-room.com
 x-api-key: <your-api-key>
 Content-Type: application/json
 Content-Length: <length>

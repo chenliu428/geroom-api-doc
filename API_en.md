@@ -19,7 +19,7 @@ x-api-key: <your-api-key>
 ## Base URL
 
 ```
-Host: https://open.ge-room.com/
+Host: https://open.ge-room.com
 ```
 
 ---
@@ -38,7 +38,7 @@ Retrieve account credits and total number of items.
 **Request Example:**
 ```http
 GET /account-info?account=example-account-name HTTP/1.1
-Host: xxxxx
+Host: https://open.ge-room.com
 x-api-key: <your-api-key>
 ```
 
@@ -90,7 +90,7 @@ Retrieve a list of all items under an account (only basic information).
 **Request Example:**
 ```http
 GET /items?account=example-account-name HTTP/1.1
-Host: xxxxx
+Host: https://open.ge-room.com
 x-api-key: <your-api-key>
 ```
 
@@ -160,7 +160,7 @@ Retrieve complete information for a specific item, including all download URLs.
 **Request Example:**
 ```http
 POST /item HTTP/1.1
-Host: xxxxxx
+Host: https://open.ge-room.com
 x-api-key: <your-api-key>
 Content-Type: application/json
 Content-Length: <length>
@@ -250,7 +250,7 @@ Submit a task to generate 3D models or paintings from images/videos.
 **Request Example:**
 ```http
 POST /create HTTP/1.1
-Host: xxxxxx
+Host: https://open.ge-room.com
 x-api-key: <your-api-key>
 Content-Type: multipart/form-data; boundary=<boundary-string>
 
@@ -327,7 +327,7 @@ Check the status of a submitted task.
 **Request Example:**
 ```http
 POST /task-status HTTP/1.1
-Host: xxxxxx
+Host: https://open.ge-room.com
 x-api-key: <your-api-key>
 Content-Type: application/json
 Content-Length: <length>
@@ -416,7 +416,7 @@ Delete multiple items from an account. Each item requires both `item_id` and `it
 **Request Example:**
 ```http
 POST /delete-items HTTP/1.1
-Host: xxxxxx
+Host: https://open.ge-room.com
 x-api-key: <your-api-key>
 Content-Type: application/json
 Content-Length: <length>
