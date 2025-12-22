@@ -222,9 +222,9 @@ Submit a task to generate 3D models or paintings from images/videos.
 **Form Fields:**
 - `account` (string, required): Account name
 - `task_type` (integer, required): Task type
-  - `1`: Generate 3D model from photo (照片生3d模型)
-  - `2`: Generate 3D model from video (视频生3d模型)
-  - `3`: Generate painting from photo (照片生画)
+  - `1`: Generate 3D model from photo
+  - `2`: Generate 3D model from video
+  - `3`: Generate painting from photo
 - `data` (JSON string, required): Task configuration
 - `file` (file, required): Input file (image or video)
 
