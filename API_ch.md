@@ -19,7 +19,7 @@ x-api-key: <your-api-key>
 ## 基础 URL
 
 ```
-Host: xxxxx
+Host: https://open.ge-room.com/
 ```
 
 ---
