@@ -222,9 +222,9 @@ Soumettre une tâche pour générer des modèles 3D ou des peintures à partir d
 **Champs du formulaire :**
 - `account` (chaîne, requis) : Nom du compte
 - `task_type` (entier, requis) : Type de tâche
-  - `1` : Générer un modèle 3D à partir d'une photo
+  - `1` : Générer un modèle 3D à partir d'une photo. Format accepté: `.webp`, `.jpeg`, `.png`.
   - `2` : Générer un modèle 3D à partir d'une vidéo
-  - `3` : Générer une peinture à partir d'une photo
+  - `3` : Générer une peinture à partir d'une photo. Format accepté: `.png`.
 - `data` (chaîne JSON, requis) : Configuration de la tâche
 - `file` (fichier, requis) : Fichier d'entrée (image ou vidéo)
 
