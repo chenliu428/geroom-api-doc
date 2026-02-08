@@ -45,7 +45,6 @@ x-api-key: <your-api-key>
 
 ```json
 {
-    "status": "success",
     "data": {
         "account_name": "example-user-123",
         "credits": 1000,
@@ -59,23 +58,29 @@ x-api-key: <your-api-key>
 
 ### 2. 获取全部物品
 
-获取当前认证账户下所有物品的列表（基础信息）。
+获取当前认证账户下物品列表（基础信息），结果分页返回。
 
 **接口：** `GET /items`
+
+**查询参数：**
+
+| 参数 | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| `page` | 整数 | 1 | 页码（从 1 开始）。 |
+| `per_page` | 整数 | 10 | 每页条数（如 10）。 |
 
 **请求示例：**
 
 ```http
-GET /items HTTP/1.1
+GET /items?page=1&per_page=10 HTTP/1.1
 Host: open.ge-room.com
 x-api-key: <your-api-key>
 ```
 
-**成功响应（200 OK）：**
+**成功响应（200 OK）– 分页：**
 
 ```json
 {
-    "status": "success",
     "account_name": "example-user-123",
     "data": [
         {
@@ -87,12 +92,20 @@ x-api-key: <your-api-key>
                 "width": 100,
                 "height": 50
             },
-            "img_link": "https://example.com/image-link"
+            "img_link": "https://example.com/image-link",
+            "created_at": "2025-02-08T10:30:00Z"
         }
-    ]
+    ],
+    "pagination": {
+        "page": 1,
+        "per_page": 10,
+        "total": 42,
+        "total_pages": 5
+    }
 }
-
 ```
+
+当物品数量较多时，响应始终为分页形式，可通过 `page` 与 `per_page` 翻页。
 
 ---
 
@@ -114,7 +127,6 @@ x-api-key: <your-api-key>
 
 ```json
 {
-    "status": "success",
     "account_name": "example-user-123",
     "data": {
         "id": "item-id-1",
@@ -129,7 +141,8 @@ x-api-key: <your-api-key>
         "ar_link": "https://example.com/ar-link",
         "fbx_url": "https://example.com/download/fbx",
         "glb_url": "https://example.com/download/glb",
-        "usdz_url": "https://example.com/download/usdz"
+        "usdz_url": "https://example.com/download/usdz",
+        "created_at": "2025-02-08T10:30:00Z"
     }
 }
 
@@ -202,7 +215,6 @@ Content-Type: image/jpeg
 
 ```json
 {
-    "status": "success",
     "account_name": "example-user-123",
     "task_id": "task-id-12345"
 }
@@ -229,13 +241,15 @@ x-api-key: <your-api-key>
 
 ```json
 {
-    "status": "success",
     "account_name": "example-user-123",
-    "task_status": "completed", // 取值：in_progress, completed, failed
+    "task_status": "completed",
     "item_id": "item-id-56789",
-    "message": "" // <可能的错误描述>
+    "created_at": "2025-02-08T10:30:00Z",
+    "message": ""
 }
 ```
+
+* `task_status` 取值：`in_progress`、`completed`、`failed`。`message` 在需要时包含错误描述。
 
 **任务状态说明**
 
@@ -245,7 +259,31 @@ x-api-key: <your-api-key>
 
 ---
 
-### 6. 批量删除物品
+### 6. 删除物品
+
+按 ID 删除单个物品。
+
+**接口：** `DELETE /items/{item_id}`
+
+**请求示例：**
+
+```http
+DELETE /items/item-id-1 HTTP/1.1
+Host: open.ge-room.com
+x-api-key: <your-api-key>
+```
+
+**成功响应（200 OK）：**
+
+响应体为空，或：
+
+```json
+{}
+```
+
+---
+
+### 7. 批量删除物品
 
 批量删除多个物品。需同时提供 ID 与名称以确认操作意图。
 
@@ -282,7 +320,6 @@ Content-Type: application/json
 
 ```json
 {
-    "status": "success",
     "account_name": "example-user-123",
     "received_count": 2,
     "successful_count": 1,
@@ -319,9 +356,10 @@ Content-Type: application/json
 
 **错误响应格式：**
 
+HTTP 状态码表示错误类型（如 4xx、5xx）。响应体可能为：
+
 ```json
 {
-    "status": "error",
     "message": "Specific error description here"
 }
 ```

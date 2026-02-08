@@ -45,7 +45,6 @@ x-api-key: <your-api-key>
 
 ```json
 {
-    "status": "success",
     "data": {
         "account_name": "example-user-123",
         "credits": 1000,
@@ -59,23 +58,29 @@ x-api-key: <your-api-key>
 
 ### 2. Get All Items
 
-Retrieve a list of all items (basic info) owned by the authenticated account.
+Retrieve a list of items (basic info) owned by the authenticated account. Results are paginated.
 
 **Endpoint:** `GET /items`
+
+**Query Parameters:**
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `page` | integer | 1 | Page number (1-based). |
+| `per_page` | integer | 10 | Number of items per page (e.g., 10). |
 
 **Request Example:**
 
 ```http
-GET /items HTTP/1.1
+GET /items?page=1&per_page=10 HTTP/1.1
 Host: open.ge-room.com
 x-api-key: <your-api-key>
 ```
 
-**Success Response (200 OK):**
+**Success Response (200 OK) – Paginated:**
 
 ```json
 {
-    "status": "success",
     "account_name": "example-user-123",
     "data": [
         {
@@ -87,12 +92,20 @@ x-api-key: <your-api-key>
                 "width": 100,
                 "height": 50
             },
-            "img_link": "https://example.com/image-link"
+            "img_link": "https://example.com/image-link",
+            "created_at": "2025-02-08T10:30:00Z"
         }
-    ]
+    ],
+    "pagination": {
+        "page": 1,
+        "per_page": 10,
+        "total": 42,
+        "total_pages": 5
+    }
 }
-
 ```
+
+When there are many items, the response is always paginated. Use `page` and `per_page` to navigate.
 
 ---
 
@@ -114,7 +127,6 @@ x-api-key: <your-api-key>
 
 ```json
 {
-    "status": "success",
     "account_name": "example-user-123",
     "data": {
         "id": "item-id-1",
@@ -129,7 +141,8 @@ x-api-key: <your-api-key>
         "ar_link": "https://example.com/ar-link",
         "fbx_url": "https://example.com/download/fbx",
         "glb_url": "https://example.com/download/glb",
-        "usdz_url": "https://example.com/download/usdz"
+        "usdz_url": "https://example.com/download/usdz",
+        "created_at": "2025-02-08T10:30:00Z"
     }
 }
 
@@ -203,7 +216,6 @@ Content-Type: image/jpeg
 
 ```json
 {
-    "status": "success",
     "account_name": "example-user-123",
     "task_id": "task-id-12345"
 }
@@ -230,13 +242,15 @@ x-api-key: <your-api-key>
 
 ```json
 {
-    "status": "success",
     "account_name": "example-user-123",
-    "task_status": "completed", // values: in_progress, completed, failed
+    "task_status": "completed",
     "item_id": "item-id-56789",
-    "message": "" // <possible error description> 
+    "created_at": "2025-02-08T10:30:00Z",
+    "message": ""
 }
 ```
+
+* `task_status` values: `in_progress`, `completed`, `failed`. `message` may contain an error description when applicable.
 
 **Task Status Values**
 
@@ -246,7 +260,31 @@ x-api-key: <your-api-key>
 
 ---
 
-### 6. Bulk Delete Items
+### 6. Delete Item
+
+Delete a single item by ID.
+
+**Endpoint:** `DELETE /items/{item_id}`
+
+**Request Example:**
+
+```http
+DELETE /items/item-id-1 HTTP/1.1
+Host: open.ge-room.com
+x-api-key: <your-api-key>
+```
+
+**Success Response (200 OK):**
+
+Empty response body, or:
+
+```json
+{}
+```
+
+---
+
+### 7. Bulk Delete Items
 
 Delete multiple items. Requires both ID and Name to verify intent.
 
@@ -261,7 +299,6 @@ Delete multiple items. Requires both ID and Name to verify intent.
         { "item_id": "item-id-2", "item_name": "item name 2" }
     ]
 }
-
 ```
 
 **Request Example:**
@@ -284,7 +321,6 @@ Content-Type: application/json
 
 ```json
 {
-    "status": "success",
     "account_name": "example-user-123",
     "received_count": 2,
     "successful_count": 1,
@@ -297,7 +333,6 @@ Content-Type: application/json
         }
     ]
 }
-
 ```
 
 **Note:** The response includes:
@@ -322,10 +357,10 @@ All errors return a standard JSON object.
 
 **Error Format:**
 
+The HTTP status code indicates the error (e.g., 4xx, 5xx). The body may contain:
+
 ```json
 {
-    "status": "error",
     "message": "Specific error description here"
 }
-
 ```
